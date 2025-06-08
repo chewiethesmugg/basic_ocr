@@ -37,8 +37,28 @@ cv2.imwrite(gray_name, gray_image)
 #binarizing the image
 #we need to greyscale it first
 
-thresh, im_bw = cv2.threshold(gray_image, 50, 100, cv2.THRESH_BINARY)
+thresh, im_bw = cv2.threshold(gray_image, 86, 500, cv2.THRESH_BINARY)
 bin_name="temp/bin_"+image_name
 print(bin_name)
 cv2.imwrite(bin_name,im_bw)
-show_image(bin_name)
+#show_image(bin_name)
+
+#NOISE REMOVAL
+
+def noise_rem(image_file):
+    import numpy as np
+    #the kernal for erosion
+    kernal = np.ones((1,1), np.uint8)
+    image = cv2.dilate(image_file, kernal, iterations = 1)
+    kernal = np.ones((1,1), np.uint8)
+
+    image = cv2.erode(image, kernal, iterations = 1)
+    image = cv2.morphologyEx(image_file, cv2.MORPH_CLOSE, kernal)
+    image = cv2.medianBlur(image, 3)
+
+    return (image)
+
+print(bin_name)
+no_noise = noise_rem(bin_name)
+cv2.imwrite("temp/no_noise_"+image_name,no_noise)
+show_image("temp/no_noise_"+image_name)
