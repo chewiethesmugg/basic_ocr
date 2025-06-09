@@ -1,3 +1,4 @@
 test_images/
 temp/
 mnist_test.csv.zip
+.env
